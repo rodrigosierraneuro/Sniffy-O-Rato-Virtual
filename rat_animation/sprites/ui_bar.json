@@ -1,0 +1,52 @@
+{
+  "name": "ui_bar",
+  "frameCount": 3,
+  "cols": 3,
+  "rows": 1,
+  "cellWidth": 744,
+  "cellHeight": 152,
+  "sheetWidth": 2232,
+  "sheetHeight": 152,
+  "fps": 1,
+  "loop": true,
+  "scale": 2,
+  "anchor": "bottom-center",
+  "frames": [
+    {
+      "index": 0,
+      "file": "07000.png",
+      "srcX": 0,
+      "srcY": 0,
+      "cellW": 744,
+      "cellH": 152,
+      "contentW": 744,
+      "contentH": 38,
+      "offsetX": 0,
+      "offsetY": 114
+    },
+    {
+      "index": 1,
+      "file": "07004.png",
+      "srcX": 744,
+      "srcY": 0,
+      "cellW": 744,
+      "cellH": 152,
+      "contentW": 230,
+      "contentH": 152,
+      "offsetX": 257,
+      "offsetY": 0
+    },
+    {
+      "index": 2,
+      "file": "07006.png",
+      "srcX": 1488,
+      "srcY": 0,
+      "cellW": 744,
+      "cellH": 152,
+      "contentW": 670,
+      "contentH": 84,
+      "offsetX": 37,
+      "offsetY": 68
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "name": "pellet",
+  "frameCount": 3,
+  "cols": 3,
+  "rows": 1,
+  "cellWidth": 102,
+  "cellHeight": 98,
+  "sheetWidth": 306,
+  "sheetHeight": 98,
+  "fps": 4,
+  "loop": true,
+  "scale": 2,
+  "anchor": "bottom-center",
+  "frames": [
+    {
+      "index": 0,
+      "file": "00987.png",
+      "srcX": 0,
+      "srcY": 0,
+      "cellW": 102,
+      "cellH": 98,
+      "contentW": 102,
+      "contentH": 98,
+      "offsetX": 0,
+      "offsetY": 0
+    },
+    {
+      "index": 1,
+      "file": "00988.png",
+      "srcX": 102,
+      "srcY": 0,
+      "cellW": 102,
+      "cellH": 98,
+      "contentW": 50,
+      "contentH": 68,
+      "offsetX": 26,
+      "offsetY": 30
+    },
+    {
+      "index": 2,
+      "file": "00989.png",
+      "srcX": 204,
+      "srcY": 0,
+      "cellW": 102,
+      "cellH": 98,
+      "contentW": 102,
+      "contentH": 98,
+      "offsetX": 0,
+      "offsetY": 0
+    }
+  ]
+}

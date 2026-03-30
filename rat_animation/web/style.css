@@ -1,0 +1,127 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #1a1a2e;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  gap: 16px;
+}
+
+h1 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #a8d8ea;
+}
+
+/* ── Canvas container ── */
+#scene-wrap {
+  position: relative;
+  border: 2px solid #2d4a6e;
+  border-radius: 6px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  overflow: hidden;
+  background: #111;
+}
+
+#scene {
+  display: block;
+  /* Crisp pixel rendering */
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* HiDPI: style width/height set by JS */
+
+/* ── FPS overlay ── */
+#fps {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 11px;
+  font-family: monospace;
+  color: #00ff88;
+  background: rgba(0,0,0,0.55);
+  padding: 2px 6px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+/* ── Controls panel ── */
+#controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  max-width: 640px;
+  width: 100%;
+  background: #16213e;
+  border: 1px solid #2d4a6e;
+  border-radius: 8px;
+  padding: 14px 18px;
+}
+
+.ctrl-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ctrl-group label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8ab4d4;
+}
+
+select, input[type="range"], button {
+  background: #0f3460;
+  color: #e0e0e0;
+  border: 1px solid #2d4a6e;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+}
+
+select:focus, input[type="range"]:focus {
+  border-color: #a8d8ea;
+}
+
+button {
+  padding: 6px 14px;
+  transition: background 0.15s;
+}
+button:hover {
+  background: #1a5276;
+}
+button.active {
+  background: #117a65;
+  border-color: #1abc9c;
+}
+
+input[type="range"] {
+  padding: 0;
+  width: 140px;
+  accent-color: #a8d8ea;
+}
+
+/* ── State readout ── */
+#state-readout {
+  font-size: 12px;
+  font-family: monospace;
+  color: #f0e68c;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 6px 12px;
+  min-width: 220px;
+  text-align: center;
+}

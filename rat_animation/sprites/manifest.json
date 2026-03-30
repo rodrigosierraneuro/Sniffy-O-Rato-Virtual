@@ -1,0 +1,646 @@
+{
+  "10drink": {
+    "png": "10drink.png",
+    "json": "10drink.json",
+    "frameCount": 10,
+    "fps": 6,
+    "loop": false
+  },
+  "10eat": {
+    "png": "10eat.png",
+    "json": "10eat.json",
+    "frameCount": 10,
+    "fps": 6,
+    "loop": false
+  },
+  "10explore_left": {
+    "png": "10explore_left.png",
+    "json": "10explore_left.json",
+    "frameCount": 8,
+    "fps": 6,
+    "loop": true
+  },
+  "10explore_right": {
+    "png": "10explore_right.png",
+    "json": "10explore_right.json",
+    "frameCount": 8,
+    "fps": 6,
+    "loop": true
+  },
+  "10freeze_a": {
+    "png": "10freeze_a.png",
+    "json": "10freeze_a.json",
+    "frameCount": 1,
+    "fps": 1,
+    "loop": false
+  },
+  "10freeze_b": {
+    "png": "10freeze_b.png",
+    "json": "10freeze_b.json",
+    "frameCount": 1,
+    "fps": 1,
+    "loop": false
+  },
+  "10groom_a": {
+    "png": "10groom_a.png",
+    "json": "10groom_a.json",
+    "frameCount": 5,
+    "fps": 4,
+    "loop": true
+  },
+  "10groom_b": {
+    "png": "10groom_b.png",
+    "json": "10groom_b.json",
+    "frameCount": 6,
+    "fps": 4,
+    "loop": true
+  },
+  "10groom_c": {
+    "png": "10groom_c.png",
+    "json": "10groom_c.json",
+    "frameCount": 10,
+    "fps": 4,
+    "loop": true
+  },
+  "10groom_d": {
+    "png": "10groom_d.png",
+    "json": "10groom_d.json",
+    "frameCount": 9,
+    "fps": 4,
+    "loop": true
+  },
+  "10groom_e": {
+    "png": "10groom_e.png",
+    "json": "10groom_e.json",
+    "frameCount": 7,
+    "fps": 4,
+    "loop": true
+  },
+  "10head_move_a": {
+    "png": "10head_move_a.png",
+    "json": "10head_move_a.json",
+    "frameCount": 10,
+    "fps": 8,
+    "loop": true
+  },
+  "10head_move_b": {
+    "png": "10head_move_b.png",
+    "json": "10head_move_b.json",
+    "frameCount": 9,
+    "fps": 8,
+    "loop": true
+  },
+  "10lever": {
+    "png": "10lever.png",
+    "json": "10lever.json",
+    "frameCount": 7,
+    "fps": 8,
+    "loop": true
+  },
+  "10misc_a": {
+    "png": "10misc_a.png",
+    "json": "10misc_a.json",
+    "frameCount": 3,
+    "fps": 8,
+    "loop": true
+  },
+  "10misc_b": {
+    "png": "10misc_b.png",
+    "json": "10misc_b.json",
+    "frameCount": 9,
+    "fps": 8,
+    "loop": true
+  },
+  "10misc_c": {
+    "png": "10misc_c.png",
+    "json": "10misc_c.json",
+    "frameCount": 10,
+    "fps": 8,
+    "loop": true
+  },
+  "10pellet": {
+    "png": "10pellet.png",
+    "json": "10pellet.json",
+    "frameCount": 3,
+    "fps": 4,
+    "loop": true
+  },
+  "10rear_left": {
+    "png": "10rear_left.png",
+    "json": "10rear_left.json",
+    "frameCount": 8,
+    "fps": 4,
+    "loop": true
+  },
+  "10rear_up_a": {
+    "png": "10rear_up_a.png",
+    "json": "10rear_up_a.json",
+    "frameCount": 2,
+    "fps": 4,
+    "loop": false
+  },
+  "10rear_up_b": {
+    "png": "10rear_up_b.png",
+    "json": "10rear_up_b.json",
+    "frameCount": 2,
+    "fps": 4,
+    "loop": false
+  },
+  "10run2_left": {
+    "png": "10run2_left.png",
+    "json": "10run2_left.json",
+    "frameCount": 8,
+    "fps": 12,
+    "loop": true
+  },
+  "10run2_right": {
+    "png": "10run2_right.png",
+    "json": "10run2_right.json",
+    "frameCount": 8,
+    "fps": 12,
+    "loop": true
+  },
+  "10run3_left": {
+    "png": "10run3_left.png",
+    "json": "10run3_left.json",
+    "frameCount": 9,
+    "fps": 12,
+    "loop": true
+  },
+  "10run_left": {
+    "png": "10run_left.png",
+    "json": "10run_left.json",
+    "frameCount": 8,
+    "fps": 12,
+    "loop": true
+  },
+  "10run_right": {
+    "png": "10run_right.png",
+    "json": "10run_right.json",
+    "frameCount": 8,
+    "fps": 12,
+    "loop": true
+  },
+  "10small_a": {
+    "png": "10small_a.png",
+    "json": "10small_a.json",
+    "frameCount": 4,
+    "fps": 8,
+    "loop": true
+  },
+  "10small_b": {
+    "png": "10small_b.png",
+    "json": "10small_b.json",
+    "frameCount": 4,
+    "fps": 8,
+    "loop": true
+  },
+  "10small_c": {
+    "png": "10small_c.png",
+    "json": "10small_c.json",
+    "frameCount": 3,
+    "fps": 8,
+    "loop": true
+  },
+  "10small_walk": {
+    "png": "10small_walk.png",
+    "json": "10small_walk.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": true
+  },
+  "10sniff2_left": {
+    "png": "10sniff2_left.png",
+    "json": "10sniff2_left.json",
+    "frameCount": 5,
+    "fps": 6,
+    "loop": true
+  },
+  "10sniff2_right": {
+    "png": "10sniff2_right.png",
+    "json": "10sniff2_right.json",
+    "frameCount": 5,
+    "fps": 6,
+    "loop": true
+  },
+  "10sniff_left": {
+    "png": "10sniff_left.png",
+    "json": "10sniff_left.json",
+    "frameCount": 9,
+    "fps": 6,
+    "loop": true
+  },
+  "10sniff_right": {
+    "png": "10sniff_right.png",
+    "json": "10sniff_right.json",
+    "frameCount": 9,
+    "fps": 6,
+    "loop": true
+  },
+  "10trot2_left": {
+    "png": "10trot2_left.png",
+    "json": "10trot2_left.json",
+    "frameCount": 6,
+    "fps": 12,
+    "loop": true
+  },
+  "10trot2_right": {
+    "png": "10trot2_right.png",
+    "json": "10trot2_right.json",
+    "frameCount": 6,
+    "fps": 12,
+    "loop": true
+  },
+  "10trot_left": {
+    "png": "10trot_left.png",
+    "json": "10trot_left.json",
+    "frameCount": 9,
+    "fps": 12,
+    "loop": true
+  },
+  "10trot_right": {
+    "png": "10trot_right.png",
+    "json": "10trot_right.json",
+    "frameCount": 9,
+    "fps": 12,
+    "loop": true
+  },
+  "10turn_left": {
+    "png": "10turn_left.png",
+    "json": "10turn_left.json",
+    "frameCount": 9,
+    "fps": 10,
+    "loop": false
+  },
+  "10turn_right": {
+    "png": "10turn_right.png",
+    "json": "10turn_right.json",
+    "frameCount": 9,
+    "fps": 10,
+    "loop": false
+  },
+  "10walk_down": {
+    "png": "10walk_down.png",
+    "json": "10walk_down.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": true
+  },
+  "10walk_left": {
+    "png": "10walk_left.png",
+    "json": "10walk_left.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": true
+  },
+  "10walk_right": {
+    "png": "10walk_right.png",
+    "json": "10walk_right.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": true
+  },
+  "10walk_up": {
+    "png": "10walk_up.png",
+    "json": "10walk_up.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": true
+  },
+  "background": {
+    "png": "background.png",
+    "json": "background.json",
+    "frameCount": 3,
+    "fps": 1,
+    "loop": true
+  },
+  "drink": {
+    "png": "drink.png",
+    "json": "drink.json",
+    "frameCount": 10,
+    "fps": 6,
+    "loop": false
+  },
+  "eat": {
+    "png": "eat.png",
+    "json": "eat.json",
+    "frameCount": 10,
+    "fps": 6,
+    "loop": false
+  },
+  "explore_left": {
+    "png": "explore_left.png",
+    "json": "explore_left.json",
+    "frameCount": 8,
+    "fps": 6,
+    "loop": true
+  },
+  "explore_right": {
+    "png": "explore_right.png",
+    "json": "explore_right.json",
+    "frameCount": 8,
+    "fps": 6,
+    "loop": true
+  },
+  "freeze_a": {
+    "png": "freeze_a.png",
+    "json": "freeze_a.json",
+    "frameCount": 1,
+    "fps": 1,
+    "loop": false
+  },
+  "freeze_b": {
+    "png": "freeze_b.png",
+    "json": "freeze_b.json",
+    "frameCount": 1,
+    "fps": 1,
+    "loop": false
+  },
+  "groom_a": {
+    "png": "groom_a.png",
+    "json": "groom_a.json",
+    "frameCount": 5,
+    "fps": 4,
+    "loop": true
+  },
+  "groom_b": {
+    "png": "groom_b.png",
+    "json": "groom_b.json",
+    "frameCount": 6,
+    "fps": 4,
+    "loop": true
+  },
+  "groom_c": {
+    "png": "groom_c.png",
+    "json": "groom_c.json",
+    "frameCount": 10,
+    "fps": 4,
+    "loop": true
+  },
+  "groom_d": {
+    "png": "groom_d.png",
+    "json": "groom_d.json",
+    "frameCount": 9,
+    "fps": 4,
+    "loop": true
+  },
+  "groom_e": {
+    "png": "groom_e.png",
+    "json": "groom_e.json",
+    "frameCount": 7,
+    "fps": 4,
+    "loop": true
+  },
+  "head_move_a": {
+    "png": "head_move_a.png",
+    "json": "head_move_a.json",
+    "frameCount": 10,
+    "fps": 8,
+    "loop": true
+  },
+  "head_move_b": {
+    "png": "head_move_b.png",
+    "json": "head_move_b.json",
+    "frameCount": 9,
+    "fps": 8,
+    "loop": true
+  },
+  "lever": {
+    "png": "lever.png",
+    "json": "lever.json",
+    "frameCount": 7,
+    "fps": 8,
+    "loop": true
+  },
+  "lever_press_l": {
+    "png": "lever_press_l.png",
+    "json": "lever_press_l.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": false
+  },
+  "lever_press_r": {
+    "png": "lever_press_r.png",
+    "json": "lever_press_r.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": false
+  },
+  "misc_a": {
+    "png": "misc_a.png",
+    "json": "misc_a.json",
+    "frameCount": 3,
+    "fps": 8,
+    "loop": true
+  },
+  "misc_b": {
+    "png": "misc_b.png",
+    "json": "misc_b.json",
+    "frameCount": 9,
+    "fps": 8,
+    "loop": true
+  },
+  "misc_c": {
+    "png": "misc_c.png",
+    "json": "misc_c.json",
+    "frameCount": 10,
+    "fps": 8,
+    "loop": true
+  },
+  "pellet": {
+    "png": "pellet.png",
+    "json": "pellet.json",
+    "frameCount": 3,
+    "fps": 4,
+    "loop": true
+  },
+  "rear_left": {
+    "png": "rear_left.png",
+    "json": "rear_left.json",
+    "frameCount": 8,
+    "fps": 4,
+    "loop": true
+  },
+  "rear_up_a": {
+    "png": "rear_up_a.png",
+    "json": "rear_up_a.json",
+    "frameCount": 2,
+    "fps": 4,
+    "loop": false
+  },
+  "rear_up_b": {
+    "png": "rear_up_b.png",
+    "json": "rear_up_b.json",
+    "frameCount": 2,
+    "fps": 4,
+    "loop": false
+  },
+  "run2_left": {
+    "png": "run2_left.png",
+    "json": "run2_left.json",
+    "frameCount": 8,
+    "fps": 12,
+    "loop": true
+  },
+  "run2_right": {
+    "png": "run2_right.png",
+    "json": "run2_right.json",
+    "frameCount": 8,
+    "fps": 12,
+    "loop": true
+  },
+  "run3_left": {
+    "png": "run3_left.png",
+    "json": "run3_left.json",
+    "frameCount": 9,
+    "fps": 12,
+    "loop": true
+  },
+  "run_left": {
+    "png": "run_left.png",
+    "json": "run_left.json",
+    "frameCount": 8,
+    "fps": 12,
+    "loop": true
+  },
+  "run_right": {
+    "png": "run_right.png",
+    "json": "run_right.json",
+    "frameCount": 8,
+    "fps": 12,
+    "loop": true
+  },
+  "small_a": {
+    "png": "small_a.png",
+    "json": "small_a.json",
+    "frameCount": 4,
+    "fps": 8,
+    "loop": true
+  },
+  "small_b": {
+    "png": "small_b.png",
+    "json": "small_b.json",
+    "frameCount": 4,
+    "fps": 8,
+    "loop": true
+  },
+  "small_c": {
+    "png": "small_c.png",
+    "json": "small_c.json",
+    "frameCount": 3,
+    "fps": 8,
+    "loop": true
+  },
+  "small_walk": {
+    "png": "small_walk.png",
+    "json": "small_walk.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": true
+  },
+  "sniff2_left": {
+    "png": "sniff2_left.png",
+    "json": "sniff2_left.json",
+    "frameCount": 5,
+    "fps": 6,
+    "loop": true
+  },
+  "sniff2_right": {
+    "png": "sniff2_right.png",
+    "json": "sniff2_right.json",
+    "frameCount": 5,
+    "fps": 6,
+    "loop": true
+  },
+  "sniff_left": {
+    "png": "sniff_left.png",
+    "json": "sniff_left.json",
+    "frameCount": 9,
+    "fps": 6,
+    "loop": true
+  },
+  "sniff_right": {
+    "png": "sniff_right.png",
+    "json": "sniff_right.json",
+    "frameCount": 9,
+    "fps": 6,
+    "loop": true
+  },
+  "trot2_left": {
+    "png": "trot2_left.png",
+    "json": "trot2_left.json",
+    "frameCount": 6,
+    "fps": 12,
+    "loop": true
+  },
+  "trot2_right": {
+    "png": "trot2_right.png",
+    "json": "trot2_right.json",
+    "frameCount": 6,
+    "fps": 12,
+    "loop": true
+  },
+  "trot_left": {
+    "png": "trot_left.png",
+    "json": "trot_left.json",
+    "frameCount": 9,
+    "fps": 12,
+    "loop": true
+  },
+  "trot_right": {
+    "png": "trot_right.png",
+    "json": "trot_right.json",
+    "frameCount": 9,
+    "fps": 12,
+    "loop": true
+  },
+  "turn_left": {
+    "png": "turn_left.png",
+    "json": "turn_left.json",
+    "frameCount": 9,
+    "fps": 10,
+    "loop": false
+  },
+  "turn_right": {
+    "png": "turn_right.png",
+    "json": "turn_right.json",
+    "frameCount": 9,
+    "fps": 10,
+    "loop": false
+  },
+  "ui_bar": {
+    "png": "ui_bar.png",
+    "json": "ui_bar.json",
+    "frameCount": 3,
+    "fps": 1,
+    "loop": true
+  },
+  "walk_down": {
+    "png": "walk_down.png",
+    "json": "walk_down.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": true
+  },
+  "walk_left": {
+    "png": "walk_left.png",
+    "json": "walk_left.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": true
+  },
+  "walk_right": {
+    "png": "walk_right.png",
+    "json": "walk_right.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": true
+  },
+  "walk_up": {
+    "png": "walk_up.png",
+    "json": "walk_up.json",
+    "frameCount": 8,
+    "fps": 8,
+    "loop": true
+  }
+}

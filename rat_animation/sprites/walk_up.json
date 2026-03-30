@@ -1,0 +1,112 @@
+{
+  "name": "walk_up",
+  "frameCount": 8,
+  "cols": 8,
+  "rows": 1,
+  "cellWidth": 282,
+  "cellHeight": 228,
+  "sheetWidth": 2256,
+  "sheetHeight": 228,
+  "fps": 8,
+  "loop": true,
+  "scale": 2,
+  "anchor": "bottom-center",
+  "frames": [
+    {
+      "index": 0,
+      "file": "00161.png",
+      "srcX": 0,
+      "srcY": 0,
+      "cellW": 282,
+      "cellH": 228,
+      "contentW": 128,
+      "contentH": 224,
+      "offsetX": 77,
+      "offsetY": 4
+    },
+    {
+      "index": 1,
+      "file": "00162.png",
+      "srcX": 282,
+      "srcY": 0,
+      "cellW": 282,
+      "cellH": 228,
+      "contentW": 140,
+      "contentH": 228,
+      "offsetX": 71,
+      "offsetY": 0
+    },
+    {
+      "index": 2,
+      "file": "00163.png",
+      "srcX": 564,
+      "srcY": 0,
+      "cellW": 282,
+      "cellH": 228,
+      "contentW": 158,
+      "contentH": 212,
+      "offsetX": 62,
+      "offsetY": 16
+    },
+    {
+      "index": 3,
+      "file": "00164.png",
+      "srcX": 846,
+      "srcY": 0,
+      "cellW": 282,
+      "cellH": 228,
+      "contentW": 176,
+      "contentH": 206,
+      "offsetX": 53,
+      "offsetY": 22
+    },
+    {
+      "index": 4,
+      "file": "00165.png",
+      "srcX": 1128,
+      "srcY": 0,
+      "cellW": 282,
+      "cellH": 228,
+      "contentW": 220,
+      "contentH": 216,
+      "offsetX": 31,
+      "offsetY": 12
+    },
+    {
+      "index": 5,
+      "file": "00166.png",
+      "srcX": 1410,
+      "srcY": 0,
+      "cellW": 282,
+      "cellH": 228,
+      "contentW": 250,
+      "contentH": 218,
+      "offsetX": 16,
+      "offsetY": 10
+    },
+    {
+      "index": 6,
+      "file": "00167.png",
+      "srcX": 1692,
+      "srcY": 0,
+      "cellW": 282,
+      "cellH": 228,
+      "contentW": 266,
+      "contentH": 214,
+      "offsetX": 8,
+      "offsetY": 14
+    },
+    {
+      "index": 7,
+      "file": "00168.png",
+      "srcX": 1974,
+      "srcY": 0,
+      "cellW": 282,
+      "cellH": 228,
+      "contentW": 282,
+      "contentH": 216,
+      "offsetX": 0,
+      "offsetY": 12
+    }
+  ]
+}

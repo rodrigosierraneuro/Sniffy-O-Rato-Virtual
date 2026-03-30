@@ -1,0 +1,52 @@
+{
+  "name": "background",
+  "frameCount": 3,
+  "cols": 3,
+  "rows": 1,
+  "cellWidth": 500,
+  "cellHeight": 290,
+  "sheetWidth": 1500,
+  "sheetHeight": 290,
+  "fps": 1,
+  "loop": true,
+  "scale": 2,
+  "anchor": "bottom-center",
+  "frames": [
+    {
+      "index": 0,
+      "file": "01001.png",
+      "srcX": 0,
+      "srcY": 0,
+      "cellW": 500,
+      "cellH": 290,
+      "contentW": 410,
+      "contentH": 290,
+      "offsetX": 45,
+      "offsetY": 0
+    },
+    {
+      "index": 1,
+      "file": "01002.png",
+      "srcX": 500,
+      "srcY": 0,
+      "cellW": 500,
+      "cellH": 290,
+      "contentW": 410,
+      "contentH": 290,
+      "offsetX": 45,
+      "offsetY": 0
+    },
+    {
+      "index": 2,
+      "file": "01003.png",
+      "srcX": 1000,
+      "srcY": 0,
+      "cellW": 500,
+      "cellH": 290,
+      "contentW": 500,
+      "contentH": 200,
+      "offsetX": 0,
+      "offsetY": 90
+    }
+  ]
+}
