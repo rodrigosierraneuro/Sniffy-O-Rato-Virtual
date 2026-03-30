@@ -76,11 +76,13 @@ class RatStateMachine {
    * @param {number} [options.speed]   Movement speed (pixels/second, default 60)
    * @param {Function} options.onStateChange  Callback(spriteName, state)
    */
-  constructor({ canvasW, canvasH, speed = 60, onStateChange }) {
+  constructor({ canvasW, canvasH, speed = 60, onStateChange, ratVariant = '' }) {
     this.canvasW = canvasW;
     this.canvasH = canvasH;
     this.speed   = speed;    // px/sec
     this.onChange = onStateChange || (() => {});
+    // Variant 2 ('10' prefix) has no lever_press animations
+    this.ratVariant = ratVariant;
 
     // Rat logical position (bottom-center anchor)
     this.x = canvasW  / 2;
@@ -283,11 +285,16 @@ class RatStateMachine {
   }
 
   _startLeverPress() {
+    // Lever press is only available for rat variant 1 (not variant '10')
+    if (this.ratVariant === '10') { this._startIdle(); return; }
     this._state      = BEHAVIORS.LEVER_PRESS;
     this._target     = null;
     this._stateTimer = 1200;
     this._emitSprite(`lever_press_${this._direction}`);
   }
+
+  /** Update rat variant at runtime (e.g. when user switches variant selector). */
+  setVariant(variant) { this.ratVariant = variant; }
 
   // ── Transitions ────────────────────────────────────────────────────────────
 
