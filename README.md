@@ -37,6 +37,22 @@ npm run build     # build estático en dist/
 npm run preview   # sirve el build
 ```
 
+## Despliegue (GitHub Pages)
+
+El repositorio incluye un workflow de GitHub Actions
+(`.github/workflows/deploy.yml`) que compila la app y la publica en GitHub
+Pages en cada push a la rama de trabajo o a `master`.
+
+**Paso manual único** (en GitHub): ve a **Settings → Pages → Build and
+deployment** y selecciona **Source: GitHub Actions**. Si despliegas desde una
+rama que no es la predeterminada, permite esa rama en el entorno
+`github-pages` (Settings → Environments → github-pages) o fusiona a `master`.
+
+Tras el primer despliegue, la app quedará en
+`https://<usuario>.github.io/<repositorio>/`. La configuración de Vite usa
+`base: "./"` (rutas relativas), por lo que funciona en ese subdirectorio sin
+ajustes.
+
 ## Arquitectura
 
 El **motor** (`src/engine/`) no depende de la UI y es testeable de forma
