@@ -261,7 +261,7 @@ function drawRat(
   state: SimState,
   anim: RatAnim,
 ): void {
-  const k = scaleRef * 0.016; // unidad de escala de la rata
+  const k = scaleRef * 0.011; // unidad de escala de la rata
   const tag = state.behavior;
   const upright = tag === "press_bar" || tag === "rear";
   const fear = state.mind.fear;
