@@ -37,21 +37,31 @@ npm run build     # build estático en dist/
 npm run preview   # sirve el build
 ```
 
-## Despliegue (GitHub Pages)
+## Uso local (privado)
 
-El repositorio incluye un workflow de GitHub Actions
-(`.github/workflows/deploy.yml`) que compila la app y la publica en GitHub
-Pages en cada push a la rama de trabajo o a `master`.
+La app está pensada para ejecutarse **solo en tu equipo**, sin publicarse en
+ningún servidor (nadie más puede verla).
 
-**Paso manual único** (en GitHub): ve a **Settings → Pages → Build and
-deployment** y selecciona **Source: GitHub Actions**. Si despliegas desde una
-rama que no es la predeterminada, permite esa rama en el entorno
-`github-pages` (Settings → Environments → github-pages) o fusiona a `master`.
+- **Desarrollo** (recarga en caliente):
 
-Tras el primer despliegue, la app quedará en
-`https://<usuario>.github.io/<repositorio>/`. La configuración de Vite usa
-`base: "./"` (rutas relativas), por lo que funciona en ese subdirectorio sin
-ajustes.
+  ```bash
+  npm install
+  npm run dev
+  ```
+
+  Abre la URL que muestra la terminal (por defecto `http://localhost:5173`).
+  El servidor escucha solo en tu máquina.
+
+- **Versión estable** (build estático servido localmente):
+
+  ```bash
+  npm run build      # genera dist/
+  npm run preview    # sirve dist/ en http://localhost:4173
+  ```
+
+Ambos modos sirven únicamente en `localhost`, así que el simulador queda
+privado. Si en el futuro quieres compartirlo con estudiantes, se puede añadir
+un despliegue (público o con acceso restringido) sin tocar el núcleo.
 
 ## Arquitectura
 
