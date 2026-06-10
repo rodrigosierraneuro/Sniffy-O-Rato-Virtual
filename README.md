@@ -16,9 +16,12 @@ ejecutable 100% en el navegador, inspirada en el clásico *Sniffy the Virtual Ra
   - Programas de reforzamiento: CRF, RF, RV, IF, IV, y extinción.
   - Condicionamiento clásico / CER: asociación tono–choque (Rescorla-Wagner),
     miedo condicionado y razón de supresión.
-- **Caja de Skinner 2.5D** dibujada de forma procedural (Canvas 2D), con la rata
-  animada según su conducta actual.
+- **Caja de Skinner 2.5D** dibujada de forma procedural (Canvas 2D): iluminación,
+  sombras y perspectiva, con la rata orientada según su movimiento y su postura
+  según la conducta (pelaje con degradado, bigotes, parpadeo).
 - **Registro acumulativo** en vivo con marcas de reforzador (firmas de cada programa).
+- **Sesión CER automática**: protocolo de ensayos línea base/EC con medición de
+  la razón de supresión y gráfica de adquisición/extinción.
 - **Ventanas de la mente**: visualización en tiempo real de las variables internas.
 - **Panel de control**: dar comida, fijar programa, presentar EC/EI, "Aislar a
   Sniffy" (acelerar el tiempo), escenarios precargados, y guardar/cargar (local).

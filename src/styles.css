@@ -103,6 +103,98 @@ body,
   letter-spacing: 0;
 }
 
+/* Pestañas */
+.panel-title.tabs {
+  gap: 6px;
+  justify-content: flex-start;
+  padding: 4px 8px;
+}
+.tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  color: var(--muted);
+  padding: 6px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.tab:hover {
+  background: transparent;
+  color: var(--text);
+}
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Panel CER */
+.cer-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 8px 10px;
+  gap: 8px;
+  min-height: 0;
+}
+.cer-config {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 10px;
+}
+.cer-config label {
+  display: flex;
+  flex-direction: column;
+  font-size: 10px;
+  color: var(--muted);
+  gap: 2px;
+}
+.cer-config input[type="number"] {
+  margin: 0;
+}
+.cer-check {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 6px !important;
+}
+.cer-check input {
+  width: auto;
+}
+.cer-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cer-actions .primary {
+  width: auto;
+}
+.cer-phase {
+  font-size: 11px;
+  color: var(--accent);
+}
+.cer-graph-host {
+  flex: 1;
+  position: relative;
+  min-height: 80px;
+}
+.cer-graph {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.cer-foot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--muted);
+}
+.cer-last b {
+  color: var(--accent-2);
+}
+
 .chamber-host,
 .record-host {
   flex: 1;

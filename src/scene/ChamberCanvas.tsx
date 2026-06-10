@@ -18,6 +18,9 @@ export function ChamberCanvas({ sim }: { sim: Simulation }) {
 
     let raf = 0;
     let phase = 0;
+    let prevX = sim.state.pos.x;
+    let facing = -1; // -1 mira a la izquierda (hacia la barra), 1 a la derecha
+    let blink = 0;
 
     const resize = () => {
       const parent = canvas.parentElement;
@@ -37,8 +40,19 @@ export function ChamberCanvas({ sim }: { sim: Simulation }) {
 
     const loop = () => {
       phase += 0.06;
+      // Orientación según el desplazamiento horizontal (con histéresis).
+      const dx = sim.state.pos.x - prevX;
+      if (dx > 0.0015) facing = 1;
+      else if (dx < -0.0015) facing = -1;
+      prevX = sim.state.pos.x;
+      // Parpadeo ocasional.
+      blink = blink > 0 ? blink - 1 : Math.random() < 0.004 ? 8 : 0;
       const dpr = window.devicePixelRatio || 1;
-      drawChamber(ctx, canvas.width / dpr, canvas.height / dpr, sim.state, phase);
+      drawChamber(ctx, canvas.width / dpr, canvas.height / dpr, sim.state, {
+        phase,
+        facing,
+        blinking: blink > 0,
+      });
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);

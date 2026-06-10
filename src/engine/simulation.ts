@@ -109,12 +109,15 @@ export class Simulation {
   }
 
   private endCS(): void {
-    this.state.csOn = false;
     this.log("cs_off");
     if (this.csWillShock) {
-      this.presentUS();
+      // El US sigue al CS: se forma/refuerza la asociación CS-US.
+      pairCsWithUs(this.state.mind);
+      this.state.csOn = false;
+      this.presentUS(); // pico de miedo + registro del US
     } else {
       // CS sin US => ensayo de extinción.
+      this.state.csOn = false;
       extinguishCs(this.state.mind);
     }
     this.csWillShock = false;

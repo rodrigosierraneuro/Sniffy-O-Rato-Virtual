@@ -69,6 +69,26 @@ export const es = {
     freeze: "congelada (miedo)",
   } as Record<string, string>,
 
+  cer: {
+    title: "Sesión CER (supresión condicionada)",
+    trials: "Ensayos",
+    csSeconds: "Duración EC (s)",
+    baselineSeconds: "Línea base (s)",
+    shock: "Con choque (adquisición)",
+    start: "Iniciar sesión",
+    stop: "Detener",
+    phaseIdle: "Listo. Carga el escenario CER para una línea base de respuesta.",
+    phaseBaseline: "Línea base",
+    phaseCs: "Tono (EC)",
+    phaseDone: "Sesión completada",
+    trial: "Ensayo",
+    remaining: "restan",
+    ratio: "Razón de supresión",
+    graphHint: "0.5 = sin supresión · 0 = supresión total",
+    tabCumulative: "Acumulativo",
+    tabCer: "CER",
+  },
+
   scenarioNames: {
     naive: "Rata ingenua (nueva)",
     magazine: "Entrenamiento de magazine",

@@ -4,8 +4,10 @@ import { SECONDS_PER_TICK } from "./engine/constants";
 import type { ScheduleKind } from "./engine/types";
 import { ChamberCanvas } from "./scene/ChamberCanvas";
 import { CumulativeRecord } from "./ui/windows/CumulativeRecord";
+import { CerPanel } from "./ui/windows/CerPanel";
 import { MindWindows } from "./ui/windows/MindWindows";
 import { ControlPanel } from "./ui/controls/ControlPanel";
+import { CerProtocol } from "./engine/cerProtocol";
 import { createInitialState } from "./engine/state";
 import { getScenario } from "./data/scenarios";
 import { downloadSave, applySave, type SaveFile } from "./persistence/save";
@@ -13,9 +15,11 @@ import { es } from "./data/i18n/es";
 
 export function App() {
   const simRef = useRef<Simulation>(new Simulation());
+  const protocolRef = useRef<CerProtocol>(new CerProtocol());
   const [paused, setPaused] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const [, forceRender] = useState(0);
+  const [recordTab, setRecordTab] = useState<"cumulative" | "cer">("cumulative");
+  const [frame, forceRender] = useState(0);
 
   const pausedRef = useRef(paused);
   const speedRef = useRef(speed);
@@ -35,7 +39,12 @@ export function App() {
         let ticks = Math.floor(acc / SECONDS_PER_TICK);
         acc -= ticks * SECONDS_PER_TICK;
         if (ticks > 3000) ticks = 3000; // tope de seguridad
-        simRef.current.run(ticks);
+        // El protocolo CER debe evaluarse en cada tick para detectar los
+        // cambios de fase aunque se avancen muchos ticks por frame.
+        for (let i = 0; i < ticks; i++) {
+          simRef.current.step();
+          protocolRef.current.update(simRef.current);
+        }
       }
       raf = requestAnimationFrame(loop);
     };
@@ -81,11 +90,13 @@ export function App() {
       reader.readAsText(file);
     },
     onReset: () => {
+      protocolRef.current.stop();
       sim.state = createInitialState();
       sim.events = [];
       forceRender((n) => n + 1);
     },
     onScenario: (id: string) => {
+      protocolRef.current.stop();
       sim.state = createInitialState();
       sim.events = [];
       getScenario(id)?.apply(sim);
@@ -120,9 +131,26 @@ export function App() {
         </section>
 
         <section className="panel record-panel">
-          <div className="panel-title">{es.windows.cumulative}</div>
+          <div className="panel-title tabs">
+            <button
+              className={recordTab === "cumulative" ? "tab active" : "tab"}
+              onClick={() => setRecordTab("cumulative")}
+            >
+              {es.cer.tabCumulative}
+            </button>
+            <button
+              className={recordTab === "cer" ? "tab active" : "tab"}
+              onClick={() => setRecordTab("cer")}
+            >
+              {es.cer.tabCer}
+            </button>
+          </div>
           <div className="record-host">
-            <CumulativeRecord sim={sim} />
+            {recordTab === "cumulative" ? (
+              <CumulativeRecord sim={sim} />
+            ) : (
+              <CerPanel sim={sim} protocol={protocolRef.current} onTick={frame} />
+            )}
           </div>
         </section>
 

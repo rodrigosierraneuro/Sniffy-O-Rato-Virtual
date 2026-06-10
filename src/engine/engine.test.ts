@@ -9,6 +9,7 @@ import {
 } from "./operant";
 import { pairCsWithUs, extinguishCs, suppressionRatio } from "./classical";
 import { armSchedule, pressDelivers } from "./schedules";
+import { CerProtocol, DEFAULT_CER_CONFIG } from "./cerProtocol";
 import type { ScheduleState } from "./types";
 
 function freshScheduleState(): ScheduleState {
@@ -195,5 +196,35 @@ describe("Simulación integrada", () => {
 
     expect(csPresses).toBeLessThan(basePresses);
     expect(suppressionRatio(csPresses, basePresses)).toBeLessThan(0.4);
+  });
+});
+
+describe("Protocolo CER automático", () => {
+  it("la supresión se profundiza a lo largo de los ensayos de adquisición", () => {
+    const sim = new Simulation(9);
+    sim.state.mind.soundFoodAssoc = 1;
+    sim.state.mind.approximation.PRESS = 0.9;
+    sim.setSchedule({ kind: "VI", param: 20 });
+
+    const protocol = new CerProtocol();
+    protocol.start(sim, { ...DEFAULT_CER_CONFIG, trials: 8, shock: true });
+
+    // Avanzamos la simulación llamando a update cada paso (como hace la UI).
+    let guard = 0;
+    while (protocol.phase !== "done" && guard < 200000) {
+      sim.step();
+      protocol.update(sim);
+      guard += 1;
+    }
+
+    expect(protocol.phase).toBe("done");
+    expect(protocol.results).toHaveLength(8);
+    // La asociación CS-US se aprendió.
+    expect(sim.state.mind.csUsAssoc).toBeGreaterThan(0.7);
+    // Los últimos ensayos suprimen más que los primeros.
+    const first = protocol.results[0].ratio;
+    const last = protocol.results[protocol.results.length - 1].ratio;
+    expect(last).toBeLessThan(first);
+    expect(last).toBeLessThan(0.35);
   });
 });
