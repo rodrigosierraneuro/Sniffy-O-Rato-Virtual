@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
 import type { Simulation } from "../engine/simulation";
 import { drawChamber } from "./drawChamber";
+import { RatAnimator } from "./ratAnimator";
 
 /**
- * Lienzo de la caja de Skinner. Lee el estado de la simulación en cada frame
- * (no a través de React) para una animación fluida. La rata se dibuja en estilo
- * vectorial 2.5D, animada según la conducta actual del motor.
+ * Lienzo de la caja de Skinner. Lee el estado de la simulación en cada frame y
+ * lo pasa por un RatAnimator que produce movimiento continuo y suave (locomoción
+ * real + transiciones de conducta), en vez de cambiar de postura cada tick.
  */
 export function ChamberCanvas({ sim }: { sim: Simulation }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -17,10 +18,8 @@ export function ChamberCanvas({ sim }: { sim: Simulation }) {
     if (!ctx) return;
 
     let raf = 0;
-    let phase = 0;
-    let prevX = sim.state.pos.x;
-    let facing = -1; // -1 mira a la izquierda (hacia la barra), 1 a la derecha
-    let blink = 0;
+    let last = performance.now();
+    const animator = new RatAnimator();
 
     const resize = () => {
       const parent = canvas.parentElement;
@@ -38,20 +37,14 @@ export function ChamberCanvas({ sim }: { sim: Simulation }) {
     const ro = new ResizeObserver(resize);
     if (canvas.parentElement) ro.observe(canvas.parentElement);
 
-    const loop = () => {
-      phase += 0.06;
-      // Orientación según el desplazamiento horizontal (con histéresis).
-      const dx = sim.state.pos.x - prevX;
-      if (dx > 0.0015) facing = 1;
-      else if (dx < -0.0015) facing = -1;
-      prevX = sim.state.pos.x;
-      // Parpadeo ocasional.
-      blink = blink > 0 ? blink - 1 : Math.random() < 0.004 ? 8 : 0;
+    const loop = (now: number) => {
+      const dt = (now - last) / 1000;
+      last = now;
+      animator.update(sim, dt);
       const dpr = window.devicePixelRatio || 1;
       drawChamber(ctx, canvas.width / dpr, canvas.height / dpr, sim.state, {
-        phase,
-        facing,
-        blinking: blink > 0,
+        params: animator.params(),
+        pos: animator.pos(),
       });
       raf = requestAnimationFrame(loop);
     };

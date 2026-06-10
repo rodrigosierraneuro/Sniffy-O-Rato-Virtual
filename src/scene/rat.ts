@@ -1,25 +1,34 @@
 /**
- * Dibujo de la rata albina vista en 3/4 desde atrás, como en el Sniffy original:
- * se mira hacia dentro de la caja y se ve a la rata sobre el piso, con el cuerpo
- * alargado, la cabeza pequeña extendida hacia el aparato del fondo y la cola
- * rosada arrastrando hacia el espectador.
+ * Dibujo de la rata albina vista en 3/4 desde atrás, como en el Sniffy original.
  *
- * Render procedural con curvas Bézier y sombreado por capas. Coordenadas en `k`;
- * origen (0,0) en los cuartos traseros (lo más cercano al espectador); -y es
- * "hacia el fondo" (donde está la cabeza).
+ * El dibujo es PARAMÉTRICO: en lugar de poses discretas recibe parámetros
+ * continuos (erguida, agachada, cabeza baja, acicalado, miedo, caminar...). Eso
+ * permite que el animador (ratAnimator.ts) mezcle conductas de forma fluida,
+ * imitando el empalme de clips del Sniffy original.
+ *
+ * Coordenadas en `k`; origen (0,0) en los cuartos traseros (lo más cercano al
+ * espectador); -y es "hacia el fondo" (donde está la cabeza).
  */
 
-export interface RatPose {
-  /** "stand" en cuatro patas, "rear" erguida hacia la barra,
-   *  "crouch" agachada (comer/acicalar/congelar). */
-  kind: "stand" | "rear" | "crouch";
+export interface RatParams {
+  /** 0 = a cuatro patas, 1 = erguida (presionar la barra). */
+  upright: number;
+  /** 0 = estirada, 1 = compacta (comer/acicalar/congelar). */
+  crouch: number;
+  /** 0..1 cabeza inclinada hacia abajo (comer). */
+  headDip: number;
+  /** 0..1 patitas delanteras hacia la cara (acicalarse). */
+  groom: number;
+  /** 0..1 miedo (temblor / congelamiento). */
+  fear: number;
+  /** 0..1 cantidad de marcha (amplitud del paso y balanceo). */
+  walk: number;
+  /** Reloj de animación. */
   phase: number;
-  blinking: boolean;
-  fear?: number;
-  headDown?: boolean;
-  grooming?: boolean;
-  /** Lado al que se arrastra la cola (-1 izquierda, 1 derecha). */
-  tailSide?: number;
+  /** Orientación (afecta el lado de la cola). */
+  facing: number;
+  /** Lado al que se arrastra la cola (-1 izq, 1 der). */
+  tailSide: number;
 }
 
 const FUR_HI = "#ffffff";
@@ -33,53 +42,57 @@ const TAIL_DARK = "#c79890";
 const EAR = "#e7b3ab";
 const EAR_IN = "#cf8f88";
 
-export function drawRat(
-  ctx: CanvasRenderingContext2D,
-  k: number,
-  pose: RatPose,
-): void {
-  const tremor = pose.fear ? Math.sin(pose.phase * 22) * pose.fear * 1.3 * k : 0;
+function clamp01(v: number): number {
+  return v < 0 ? 0 : v > 1 ? 1 : v;
+}
+
+export function drawRat(ctx: CanvasRenderingContext2D, k: number, p: RatParams): void {
+  const tremor = p.fear > 0.01 ? Math.sin(p.phase * 22) * p.fear * 1.3 * k : 0;
   ctx.save();
   ctx.translate(tremor, 0);
   ctx.lineJoin = "round";
   ctx.lineCap = "round";
-  if (pose.kind === "rear") drawRearing(ctx, k, pose);
-  else drawQuadruped(ctx, k, pose);
+
+  const up = clamp01(p.upright);
+  // Mezcla por disolución entre el cuadrúpedo y la postura erguida.
+  if (1 - up > 0.01) {
+    ctx.save();
+    ctx.globalAlpha = 1 - up;
+    drawQuadruped(ctx, k, p);
+    ctx.restore();
+  }
+  if (up > 0.01) {
+    ctx.save();
+    ctx.globalAlpha = up;
+    drawRearing(ctx, k, p);
+    ctx.restore();
+  }
   ctx.restore();
 }
 
 /* ============================ Cuadrúpedo (3/4) ============================ */
 
-function drawQuadruped(
-  ctx: CanvasRenderingContext2D,
-  k: number,
-  pose: RatPose,
-): void {
-  const crouch = pose.kind === "crouch";
-  const len = crouch ? 42 : 48;
-  // La cabeza se extiende hacia el fondo; algo más baja al comer.
-  const headDip = pose.headDown ? 3 : 0;
-  const breathe = crouch ? 0 : Math.sin(pose.phase) * 0.5;
-  const tailSide = pose.tailSide ?? -1;
-  const sway = Math.sin(pose.phase * 1.3) * 2;
-  const stepA = crouch ? 0 : Math.sin(pose.phase * 2) * 2;
-  const stepB = crouch ? 0 : Math.sin(pose.phase * 2 + Math.PI) * 2;
-  // Giro 3/4: el cuerpo se ladea ligeramente y la cabeza se desplaza.
-  const yaw = 0.06;
+function drawQuadruped(ctx: CanvasRenderingContext2D, k: number, p: RatParams): void {
+  const crouch = clamp01(p.crouch);
+  const len = 48 - 6 * crouch;
+  const headDip = p.headDip * 3 + crouch * 1; // en k
+  const walk = clamp01(p.walk);
+  const breathe = Math.sin(p.phase) * 0.5 * (1 - 0.6 * walk);
+  const bob = walk * Math.abs(Math.sin(p.phase * 2)) * 0.7;
+  const tailSide = p.tailSide;
+  const sway = Math.sin(p.phase * 1.3) * 2;
+  const stepA = Math.sin(p.phase * 2) * 3 * walk;
+  const stepB = Math.sin(p.phase * 2 + Math.PI) * 3 * walk;
   const headX = 2.4;
 
   ctx.save();
-  ctx.rotate(yaw);
+  ctx.rotate(0.06);
 
-  // --- Cola (detrás) ---
   drawTail(ctx, k, tailSide, sway);
 
-  // --- Cuerpo + cabeza ---
   ctx.save();
-  ctx.translate(0, -breathe * k);
+  ctx.translate(0, -(breathe + bob) * k);
   traceQuadBody(ctx, k, len, headX, headDip);
-
-  // Volumen: luz direccional arriba-izquierda.
   const g = ctx.createRadialGradient(-5 * k, -(len * 0.5) * k, 2 * k, -2 * k, -(len * 0.28) * k, len * k);
   g.addColorStop(0, FUR_HI);
   g.addColorStop(0.4, FUR_LIGHT);
@@ -87,47 +100,43 @@ function drawQuadruped(
   g.addColorStop(1, FUR_EDGE);
   ctx.fillStyle = g;
   ctx.fill();
-
   ctx.save();
   ctx.clip();
-  shadeQuadBody(ctx, k, len);
+  shadeBody(ctx, k, len);
   furTexture(ctx, k, len, 12);
   ctx.restore();
-
   ctx.lineWidth = 0.7 * k;
   ctx.strokeStyle = "rgba(140,130,116,0.3)";
   ctx.stroke();
   ctx.restore();
 
-  // --- Pies traseros rosados a los lados del rump ---
   drawHindFoot(ctx, k, -11.5 + stepA, 4, -1);
   drawHindFoot(ctx, k, 11.5 + stepB, 4, 1);
 
-  // --- Cabeza pequeña, orejas y carita ---
-  drawQuadHead(ctx, k, len, headX, headDip, pose);
+  // En vista trasera la cara solo se ve cuando la rata se gira hacia el
+  // espectador (acicalarse o congelarse de miedo); al comer/explorar se ve el lomo.
+  const showFace = p.groom > 0.3 || p.fear > 0.3;
+  drawQuadHead(ctx, k, len, headX, headDip, showFace);
 
-  // --- Acicalarse: patitas hacia la cara ---
-  if (pose.grooming) {
+  if (p.groom > 0.3) {
     const hy = -(len + 1) * k;
+    const amp = clamp01(p.groom);
     ctx.strokeStyle = SKIN;
     ctx.lineWidth = 2 * k;
-    const gp = Math.sin(pose.phase * 6) * 1.3 * k;
+    const gp = Math.sin(p.phase * 6) * 1.3 * amp * k;
+    ctx.globalAlpha = amp;
     ctx.beginPath();
     ctx.moveTo((headX - 2) * k, hy + 9 * k);
     ctx.quadraticCurveTo((headX - 1) * k, hy + 4 * k, headX * k, hy + 2 * k + gp);
     ctx.moveTo((headX + 2) * k, hy + 9 * k);
     ctx.quadraticCurveTo((headX + 1) * k, hy + 4 * k, headX * k, hy + 2 * k + gp);
     ctx.stroke();
+    ctx.globalAlpha = 1;
   }
 
   ctx.restore();
 }
 
-/**
- * Silueta alargada del cuadrúpedo: cuartos traseros anchos (cerca), lomo
- * arqueado que se afina hacia los hombros y una cabeza pequeña que se proyecta
- * hacia el fondo. Asimétrica (más llena en el flanco izquierdo) para el 3/4.
- */
 function traceQuadBody(
   ctx: CanvasRenderingContext2D,
   k: number,
@@ -139,37 +148,31 @@ function traceQuadBody(
   const shoulderHalf = 8.5;
   const headHalf = 5;
   const neckY = -(len * 0.74);
-  const tipY = -(len - 1 + headDip * 0.3); // coronilla redondeada (sin punta)
+  const tipY = -(len - 1 + headDip * 0.3);
   const hx = headX;
   ctx.beginPath();
   ctx.moveTo(0, 6 * k);
-  // Flanco izquierdo (cercano, más lleno)
   ctx.bezierCurveTo(-(rumpHalf + 1.5) * k, 5 * k, -(rumpHalf + 2) * k, -4 * k, -rumpHalf * k, -12 * k);
   ctx.bezierCurveTo(-(rumpHalf - 0.5) * k, -(len * 0.42) * k, -(shoulderHalf + 1.5) * k, -(len * 0.62) * k, -shoulderHalf * k, neckY * k);
-  // Cuello -> cabeza redondeada (domo), sin hocico puntiagudo
   ctx.bezierCurveTo(-(headHalf + 1.5) * k + hx * k, (neckY - 2) * k, -(headHalf + 1) * k + hx * k, (tipY + 2.5) * k, hx * k, tipY * k);
   ctx.bezierCurveTo((headHalf + 1) * k + hx * k, (tipY + 2.5) * k, (headHalf + 1.5) * k + hx * k, (neckY - 2) * k, shoulderHalf * k, neckY * k);
-  // Flanco derecho (lejano, más recto)
   ctx.bezierCurveTo((shoulderHalf + 1) * k, -(len * 0.62) * k, (rumpHalf - 0.5) * k, -(len * 0.42) * k, rumpHalf * k, -12 * k);
   ctx.bezierCurveTo((rumpHalf + 1.5) * k, -4 * k, (rumpHalf + 1) * k, 5 * k, 0, 6 * k);
   ctx.closePath();
 }
 
-function shadeQuadBody(ctx: CanvasRenderingContext2D, k: number, len: number): void {
+function shadeBody(ctx: CanvasRenderingContext2D, k: number, len: number): void {
   const shade = "rgba(150,142,128,";
-  // Flanco derecho (lado en sombra).
   const rs = ctx.createLinearGradient(13 * k, 0, 1 * k, 0);
   rs.addColorStop(0, shade + "0.5)");
   rs.addColorStop(1, shade + "0)");
   ctx.fillStyle = rs;
   ctx.fillRect(1 * k, -len * k, 16 * k, (len + 8) * k);
-  // Flanco izquierdo (más tenue).
   const ls = ctx.createLinearGradient(-14 * k, 0, -2 * k, 0);
   ls.addColorStop(0, shade + "0.24)");
   ls.addColorStop(1, shade + "0)");
   ctx.fillStyle = ls;
   ctx.fillRect(-17 * k, -len * k, 15 * k, (len + 8) * k);
-  // Sombra de los muslos (insinúa los dos cuartos traseros).
   for (const sx of [-1, 1]) {
     const hg = ctx.createRadialGradient(sx * 7 * k, -2 * k, 2 * k, sx * 7 * k, -2 * k, 8 * k);
     hg.addColorStop(0, shade + "0)");
@@ -180,14 +183,12 @@ function shadeQuadBody(ctx: CanvasRenderingContext2D, k: number, len: number): v
     ctx.arc(sx * 7 * k, -2 * k, 8 * k, 0, Math.PI * 2);
     ctx.fill();
   }
-  // Surco de la columna.
-  const spine = ctx.createLinearGradient(-3 * k + 2 * k, 0, 3 * k + 2 * k, 0);
+  const spine = ctx.createLinearGradient(-1 * k, 0, 5 * k, 0);
   spine.addColorStop(0, shade + "0)");
   spine.addColorStop(0.5, shade + "0.12)");
   spine.addColorStop(1, shade + "0)");
   ctx.fillStyle = spine;
   ctx.fillRect(-1 * k, -(len * 0.82) * k, 6 * k, (len * 0.72) * k);
-  // Oclusión bajo el cuello.
   const occ = ctx.createRadialGradient(2 * k, -(len * 0.74) * k, 1 * k, 2 * k, -(len * 0.74) * k, 8 * k);
   occ.addColorStop(0, shade + "0.28)");
   occ.addColorStop(1, shade + "0)");
@@ -201,15 +202,12 @@ function drawQuadHead(
   len: number,
   headX: number,
   headDip: number,
-  pose: RatPose,
+  showFace: boolean,
 ): void {
   const hx = headX * k;
-  const baseY = -(len * 0.9 + headDip * 0.3) * k;
-  // Orejas pequeñas a los lados de la cabeza (3/4: izquierda algo mayor).
+  const baseY = -(len * 0.9) * k + headDip * 0.3 * k;
   drawEar(ctx, k, hx - 5.2 * k, baseY + 3 * k, 0.92);
   drawEar(ctx, k, hx + 5 * k, baseY + 3 * k, 0.8);
-
-  // Volumen de la cabeza (pequeña).
   const g = ctx.createRadialGradient(hx - 1.5 * k, baseY, 1 * k, hx, baseY + 1 * k, 7 * k);
   g.addColorStop(0, "rgba(255,255,255,0.5)");
   g.addColorStop(1, "rgba(255,255,255,0)");
@@ -217,9 +215,7 @@ function drawQuadHead(
   ctx.beginPath();
   ctx.ellipse(hx, baseY + 1 * k, 5.5 * k, 5 * k, 0, 0, Math.PI * 2);
   ctx.fill();
-
-  // Carita visible al comer/agacharse o erguirse.
-  if (pose.headDown || pose.kind === "crouch") {
+  if (showFace) {
     const fy = baseY + 1 * k;
     ctx.beginPath();
     ctx.ellipse(hx, fy + 3 * k, 2.6 * k, 2.2 * k, 0, 0, Math.PI * 2);
@@ -229,31 +225,28 @@ function drawQuadHead(
     ctx.ellipse(hx, fy + 4.8 * k, 1.1 * k, 0.9 * k, 0, 0, Math.PI * 2);
     ctx.fillStyle = "#d98c9a";
     ctx.fill();
-    if (!pose.blinking) {
-      for (const sx of [-2.4, 2.4]) {
-        ctx.beginPath();
-        ctx.ellipse(hx + sx * k, fy + 1.5 * k, 1.3 * k, 1.5 * k, 0, 0, Math.PI * 2);
-        ctx.fillStyle = "#161013";
-        ctx.fill();
-      }
+    for (const sx of [-2.4, 2.4]) {
+      ctx.beginPath();
+      ctx.ellipse(hx + sx * k, fy + 1.5 * k, 1.3 * k, 1.5 * k, 0, 0, Math.PI * 2);
+      ctx.fillStyle = "#161013";
+      ctx.fill();
     }
   }
 }
 
 /* ============================ Erguida (barra) ============================ */
 
-function drawRearing(ctx: CanvasRenderingContext2D, k: number, pose: RatPose): void {
-  const len = 50;
+function drawRearing(ctx: CanvasRenderingContext2D, k: number, p: RatParams): void {
+  const len = 56; // más alta para que "erguirse" se lea con claridad
   const headX = 1.5;
   ctx.save();
   ctx.rotate(0.03);
 
-  drawTail(ctx, k, pose.tailSide ?? -1, Math.sin(pose.phase * 1.3) * 2);
+  drawTail(ctx, k, p.tailSide, Math.sin(p.phase * 1.3) * 2);
   drawHindFoot(ctx, k, -9, 4, -1);
   drawHindFoot(ctx, k, 9, 4, 1);
 
-  ctx.translate(0, -(Math.sin(pose.phase) * 0.5) * k);
-  // Cuerpo vertical en forma de pera.
+  ctx.translate(0, -(Math.sin(p.phase) * 0.5) * k);
   traceRearBody(ctx, k, len, headX);
   const g = ctx.createRadialGradient(-5 * k, -(len * 0.5) * k, 2 * k, -2 * k, -(len * 0.3) * k, len * k);
   g.addColorStop(0, FUR_HI);
@@ -264,26 +257,27 @@ function drawRearing(ctx: CanvasRenderingContext2D, k: number, pose: RatPose): v
   ctx.fill();
   ctx.save();
   ctx.clip();
-  shadeQuadBody(ctx, k, len);
+  shadeBody(ctx, k, len);
   furTexture(ctx, k, len, 12);
   ctx.restore();
   ctx.lineWidth = 0.7 * k;
   ctx.strokeStyle = "rgba(140,130,116,0.3)";
   ctx.stroke();
 
-  // Patitas delanteras hacia la barra (arriba).
-  const reach = Math.sin(pose.phase * 3) * 1.6 * k;
+  // Patitas delanteras hacia la barra (se extienden hacia el fondo, no rectas).
+  const reach = Math.sin(p.phase * 3) * 1.6 * k;
   ctx.strokeStyle = SKIN;
   ctx.lineWidth = 2.2 * k;
   const topY = -(len) * k;
   ctx.beginPath();
-  ctx.moveTo(-3 * k, topY + 8 * k);
-  ctx.quadraticCurveTo(-1 * k, topY + 2 * k, 0 * k, topY - 2 * k - reach);
-  ctx.moveTo(3 * k, topY + 8 * k);
-  ctx.quadraticCurveTo(2 * k, topY + 2 * k, 3 * k, topY - 1 * k - reach);
+  ctx.moveTo(-3 * k, topY + 9 * k);
+  ctx.quadraticCurveTo(-4 * k, topY + 3 * k, -5 * k - reach, topY + 1 * k);
+  ctx.moveTo(3 * k, topY + 9 * k);
+  ctx.quadraticCurveTo(4 * k, topY + 3 * k, 5 * k + reach, topY + 1 * k);
   ctx.stroke();
 
-  drawQuadHead(ctx, k, len, headX, 0, { ...pose, headDown: true });
+  // Erguida en la barra mira a la pared del fondo: se ve el lomo, no la cara.
+  drawQuadHead(ctx, k, len, headX, 0, false);
   ctx.restore();
 }
 
@@ -292,7 +286,7 @@ function traceRearBody(ctx: CanvasRenderingContext2D, k: number, len: number, he
   ctx.beginPath();
   ctx.moveTo(0, 6 * k);
   ctx.bezierCurveTo(-13 * k, 5 * k, -14 * k, -8 * k, -12 * k, -(len * 0.45) * k);
-  ctx.bezierCurveTo(-11 * k, -(len * 0.7) * k, -(7) * k + hx * k, -(len * 0.9) * k, hx * k, -len * k);
+  ctx.bezierCurveTo(-11 * k, -(len * 0.7) * k, -7 * k + hx * k, -(len * 0.9) * k, hx * k, -len * k);
   ctx.bezierCurveTo(7 * k + hx * k, -(len * 0.9) * k, 11 * k, -(len * 0.7) * k, 12 * k, -(len * 0.45) * k);
   ctx.bezierCurveTo(14 * k, -8 * k, 13 * k, 5 * k, 0, 6 * k);
   ctx.closePath();

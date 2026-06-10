@@ -1,10 +1,10 @@
-import type { SimState, BehaviorTag } from "../engine/types";
-import { drawRat as drawRatArt, type RatPose } from "./rat";
+import type { SimState } from "../engine/types";
+import { drawRat as drawRatArt, type RatParams } from "./rat";
 
+/** Salida del animador: parámetros de postura + posición visible de la rata. */
 export interface RatAnim {
-  phase: number;
-  facing: 1 | -1 | number;
-  blinking: boolean;
+  params: RatParams;
+  pos: { x: number; y: number };
 }
 
 interface Box {
@@ -40,19 +40,19 @@ export function drawChamber(
   const p = makePersp(box);
 
   drawCage(ctx, p);
-  drawApparatus(ctx, p, state);
+  drawApparatus(ctx, p, state, anim.params.upright);
 
-  // --- Rata sobre el piso, escalada según profundidad ---
-  const depth = clamp((state.pos.y - 0.45) / 0.5, 0, 1); // 0 fondo, 1 cerca
+  // --- Rata sobre el piso (posición visible del animador), escalada por profundidad ---
+  const depth = clamp((anim.pos.y - 0.45) / 0.5, 0, 1); // 0 fondo, 1 cerca
   const floorL = lerp(p.bx0, p.fx0, depth);
   const floorR = lerp(p.bx1, p.fx1, depth);
-  const ratX = lerp(floorL, floorR, state.pos.x);
+  const ratX = lerp(floorL, floorR, anim.pos.x);
   const ratY = lerp(p.by1, p.fy1, depth);
   const k = Math.min(w, h) * 0.006 * lerp(0.62, 1.15, depth);
   drawRatShadow(ctx, ratX, ratY, k);
   ctx.save();
   ctx.translate(ratX, ratY);
-  drawRatArt(ctx, k, behaviorToPose(state, anim));
+  drawRatArt(ctx, k, anim.params);
   ctx.restore();
 
   if (state.csOn) drawCueGlow(ctx, p);
@@ -136,7 +136,7 @@ function drawCage(ctx: CanvasRenderingContext2D, p: Persp): void {
   ctx.stroke();
 }
 
-function drawApparatus(ctx: CanvasRenderingContext2D, p: Persp, state: SimState): void {
+function drawApparatus(ctx: CanvasRenderingContext2D, p: Persp, state: SimState, upright: number): void {
   const bw = p.bx1 - p.bx0;
   const bh = p.by1 - p.by0;
   const cx = (x: number) => p.bx0 + bw * x;
@@ -149,7 +149,7 @@ function drawApparatus(ctx: CanvasRenderingContext2D, p: Persp, state: SimState)
   drawDomeLight(ctx, cx(0.5), cy(0.16), bw * 0.04, state.csOn);
 
   // Palanca (barra) latón, a la izquierda-centro.
-  drawLever(ctx, cx(0.34), cy(0.58), bw * 0.12, state.behavior === "press_bar");
+  drawLever(ctx, cx(0.34), cy(0.58), bw * 0.12, upright > 0.5);
 
   // Comedero / magazine, centro.
   drawMagazine(ctx, cx(0.56), cy(0.66), bw * 0.13, state.pelletAvailable);
@@ -308,18 +308,6 @@ function drawVignette(ctx: CanvasRenderingContext2D, w: number, h: number): void
   g.addColorStop(1, "rgba(0,0,0,0.4)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, w, h);
-}
-
-/** Traduce la conducta del motor a una postura de la rata. */
-function behaviorToPose(state: SimState, anim: RatAnim): RatPose {
-  const tag: BehaviorTag = state.behavior;
-  const tailSide = anim.facing >= 0 ? 1 : -1;
-  const base = { phase: anim.phase, blinking: anim.blinking, tailSide };
-  if (tag === "press_bar" || tag === "rear") return { kind: "rear", ...base };
-  if (tag === "eat" || tag === "to_magazine") return { kind: "crouch", headDown: true, ...base };
-  if (tag === "groom") return { kind: "crouch", grooming: true, ...base };
-  if (tag === "freeze") return { kind: "crouch", fear: state.mind.fear, ...base };
-  return { kind: "stand", ...base };
 }
 
 /* utilidades */
