@@ -1,0 +1,64 @@
+{
+  "name": "small_b",
+  "frameCount": 4,
+  "cols": 4,
+  "rows": 1,
+  "cellWidth": 306,
+  "cellHeight": 194,
+  "sheetWidth": 1224,
+  "sheetHeight": 194,
+  "fps": 8,
+  "loop": true,
+  "scale": 2,
+  "anchor": "bottom-center",
+  "frames": [
+    {
+      "index": 0,
+      "file": "00680.png",
+      "srcX": 0,
+      "srcY": 0,
+      "cellW": 306,
+      "cellH": 194,
+      "contentW": 286,
+      "contentH": 194,
+      "offsetX": 10,
+      "offsetY": 0
+    },
+    {
+      "index": 1,
+      "file": "00685.png",
+      "srcX": 306,
+      "srcY": 0,
+      "cellW": 306,
+      "cellH": 194,
+      "contentW": 302,
+      "contentH": 178,
+      "offsetX": 2,
+      "offsetY": 16
+    },
+    {
+      "index": 2,
+      "file": "00687.png",
+      "srcX": 612,
+      "srcY": 0,
+      "cellW": 306,
+      "cellH": 194,
+      "contentW": 306,
+      "contentH": 182,
+      "offsetX": 0,
+      "offsetY": 12
+    },
+    {
+      "index": 3,
+      "file": "00689.png",
+      "srcX": 918,
+      "srcY": 0,
+      "cellW": 306,
+      "cellH": 194,
+      "contentW": 280,
+      "contentH": 192,
+      "offsetX": 13,
+      "offsetY": 2
+    }
+  ]
+}

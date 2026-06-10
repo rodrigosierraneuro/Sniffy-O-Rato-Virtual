@@ -1,0 +1,28 @@
+{
+  "name": "freeze_b",
+  "frameCount": 1,
+  "cols": 1,
+  "rows": 1,
+  "cellWidth": 298,
+  "cellHeight": 238,
+  "sheetWidth": 298,
+  "sheetHeight": 238,
+  "fps": 1,
+  "loop": false,
+  "scale": 2,
+  "anchor": "bottom-center",
+  "frames": [
+    {
+      "index": 0,
+      "file": "00332.png",
+      "srcX": 0,
+      "srcY": 0,
+      "cellW": 298,
+      "cellH": 238,
+      "contentW": 298,
+      "contentH": 238,
+      "offsetX": 0,
+      "offsetY": 0
+    }
+  ]
+}

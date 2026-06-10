@@ -1,0 +1,52 @@
+{
+  "name": "misc_a",
+  "frameCount": 3,
+  "cols": 3,
+  "rows": 1,
+  "cellWidth": 488,
+  "cellHeight": 124,
+  "sheetWidth": 1464,
+  "sheetHeight": 124,
+  "fps": 8,
+  "loop": true,
+  "scale": 2,
+  "anchor": "bottom-center",
+  "frames": [
+    {
+      "index": 0,
+      "file": "00590.png",
+      "srcX": 0,
+      "srcY": 0,
+      "cellW": 488,
+      "cellH": 124,
+      "contentW": 482,
+      "contentH": 124,
+      "offsetX": 3,
+      "offsetY": 0
+    },
+    {
+      "index": 1,
+      "file": "00591.png",
+      "srcX": 488,
+      "srcY": 0,
+      "cellW": 488,
+      "cellH": 124,
+      "contentW": 488,
+      "contentH": 124,
+      "offsetX": 0,
+      "offsetY": 0
+    },
+    {
+      "index": 2,
+      "file": "00592.png",
+      "srcX": 976,
+      "srcY": 0,
+      "cellW": 488,
+      "cellH": 124,
+      "contentW": 482,
+      "contentH": 124,
+      "offsetX": 3,
+      "offsetY": 0
+    }
+  ]
+}

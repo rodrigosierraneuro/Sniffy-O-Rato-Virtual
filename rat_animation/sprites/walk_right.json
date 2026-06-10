@@ -1,0 +1,112 @@
+{
+  "name": "walk_right",
+  "frameCount": 8,
+  "cols": 8,
+  "rows": 1,
+  "cellWidth": 226,
+  "cellHeight": 196,
+  "sheetWidth": 1808,
+  "sheetHeight": 196,
+  "fps": 8,
+  "loop": true,
+  "scale": 2,
+  "anchor": "bottom-center",
+  "frames": [
+    {
+      "index": 0,
+      "file": "00131.png",
+      "srcX": 0,
+      "srcY": 0,
+      "cellW": 226,
+      "cellH": 196,
+      "contentW": 226,
+      "contentH": 180,
+      "offsetX": 0,
+      "offsetY": 16
+    },
+    {
+      "index": 1,
+      "file": "00132.png",
+      "srcX": 226,
+      "srcY": 0,
+      "cellW": 226,
+      "cellH": 196,
+      "contentW": 220,
+      "contentH": 186,
+      "offsetX": 3,
+      "offsetY": 10
+    },
+    {
+      "index": 2,
+      "file": "00133.png",
+      "srcX": 452,
+      "srcY": 0,
+      "cellW": 226,
+      "cellH": 196,
+      "contentW": 214,
+      "contentH": 194,
+      "offsetX": 6,
+      "offsetY": 2
+    },
+    {
+      "index": 3,
+      "file": "00134.png",
+      "srcX": 678,
+      "srcY": 0,
+      "cellW": 226,
+      "cellH": 196,
+      "contentW": 196,
+      "contentH": 196,
+      "offsetX": 15,
+      "offsetY": 0
+    },
+    {
+      "index": 4,
+      "file": "00135.png",
+      "srcX": 904,
+      "srcY": 0,
+      "cellW": 226,
+      "cellH": 196,
+      "contentW": 196,
+      "contentH": 194,
+      "offsetX": 15,
+      "offsetY": 2
+    },
+    {
+      "index": 5,
+      "file": "00136.png",
+      "srcX": 1130,
+      "srcY": 0,
+      "cellW": 226,
+      "cellH": 196,
+      "contentW": 208,
+      "contentH": 192,
+      "offsetX": 9,
+      "offsetY": 4
+    },
+    {
+      "index": 6,
+      "file": "00137.png",
+      "srcX": 1356,
+      "srcY": 0,
+      "cellW": 226,
+      "cellH": 196,
+      "contentW": 206,
+      "contentH": 192,
+      "offsetX": 10,
+      "offsetY": 4
+    },
+    {
+      "index": 7,
+      "file": "00138.png",
+      "srcX": 1582,
+      "srcY": 0,
+      "cellW": 226,
+      "cellH": 196,
+      "contentW": 194,
+      "contentH": 188,
+      "offsetX": 16,
+      "offsetY": 8
+    }
+  ]
+}

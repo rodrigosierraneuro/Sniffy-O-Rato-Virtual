@@ -1,0 +1,100 @@
+{
+  "name": "lever",
+  "frameCount": 7,
+  "cols": 7,
+  "rows": 1,
+  "cellWidth": 118,
+  "cellHeight": 102,
+  "sheetWidth": 826,
+  "sheetHeight": 102,
+  "fps": 8,
+  "loop": true,
+  "scale": 2,
+  "anchor": "bottom-center",
+  "frames": [
+    {
+      "index": 0,
+      "file": "00992.png",
+      "srcX": 0,
+      "srcY": 0,
+      "cellW": 118,
+      "cellH": 102,
+      "contentW": 50,
+      "contentH": 68,
+      "offsetX": 34,
+      "offsetY": 34
+    },
+    {
+      "index": 1,
+      "file": "00993.png",
+      "srcX": 118,
+      "srcY": 0,
+      "cellW": 118,
+      "cellH": 102,
+      "contentW": 86,
+      "contentH": 36,
+      "offsetX": 16,
+      "offsetY": 66
+    },
+    {
+      "index": 2,
+      "file": "00994.png",
+      "srcX": 236,
+      "srcY": 0,
+      "cellW": 118,
+      "cellH": 102,
+      "contentW": 86,
+      "contentH": 50,
+      "offsetX": 16,
+      "offsetY": 52
+    },
+    {
+      "index": 3,
+      "file": "00995.png",
+      "srcX": 354,
+      "srcY": 0,
+      "cellW": 118,
+      "cellH": 102,
+      "contentW": 84,
+      "contentH": 86,
+      "offsetX": 17,
+      "offsetY": 16
+    },
+    {
+      "index": 4,
+      "file": "00996.png",
+      "srcX": 472,
+      "srcY": 0,
+      "cellW": 118,
+      "cellH": 102,
+      "contentW": 118,
+      "contentH": 102,
+      "offsetX": 0,
+      "offsetY": 0
+    },
+    {
+      "index": 5,
+      "file": "00997.png",
+      "srcX": 590,
+      "srcY": 0,
+      "cellW": 118,
+      "cellH": 102,
+      "contentW": 118,
+      "contentH": 102,
+      "offsetX": 0,
+      "offsetY": 0
+    },
+    {
+      "index": 6,
+      "file": "00998.png",
+      "srcX": 708,
+      "srcY": 0,
+      "cellW": 118,
+      "cellH": 102,
+      "contentW": 118,
+      "contentH": 102,
+      "offsetX": 0,
+      "offsetY": 0
+    }
+  ]
+}

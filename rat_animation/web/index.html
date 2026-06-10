@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sniffy the Virtual Rat — Animación Moderna</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>🐀 Sniffy the Virtual Rat</h1>
+
+  <div id="scene-wrap">
+    <canvas id="scene" style="width:510px;height:330px"></canvas>
+    <div id="fps">– fps</div>
+  </div>
+
+  <div id="state-readout">Cargando sprites…</div>
+
+  <div id="controls">
+
+    <div class="ctrl-group">
+      <label>Comportamiento</label>
+      <select id="behavior-select">
+        <option value="auto">Autónomo</option>
+        <optgroup label="Locomoción">
+          <option value="walk_left">Caminar ←</option>
+          <option value="walk_right">Caminar →</option>
+          <option value="walk_up">Caminar ↑</option>
+          <option value="walk_down">Caminar ↓</option>
+          <option value="run_left">Correr ←</option>
+          <option value="run_right">Correr →</option>
+          <option value="trot_left">Trotar ←</option>
+          <option value="trot_right">Trotar →</option>
+        </optgroup>
+        <optgroup label="Comportamiento">
+          <option value="groom_a">Acicalar A</option>
+          <option value="groom_b">Acicalar B</option>
+          <option value="groom_c">Acicalar C</option>
+          <option value="sniff_left">Olfatear ←</option>
+          <option value="sniff_right">Olfatear →</option>
+          <option value="eat">Comer</option>
+          <option value="drink">Beber</option>
+          <option value="rear_up_a">Erguirse</option>
+          <option value="explore_left">Explorar ←</option>
+          <option value="explore_right">Explorar →</option>
+          <option value="lever_press_l">Palanca ←</option>
+          <option value="lever_press_r">Palanca →</option>
+          <option value="freeze_a">Congelar</option>
+          <option value="turn_left">Girar ←</option>
+          <option value="turn_right">Girar →</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="ctrl-group">
+      <label>Variante de rata</label>
+      <select id="variant-select">
+        <option value="">Rata 1 (marrón)</option>
+        <option value="10">Rata 2 (alternativa)</option>
+      </select>
+    </div>
+
+    <div class="ctrl-group">
+      <label>Velocidad: <span id="speed-val">1.0×</span></label>
+      <input type="range" id="speed-range" min="0.25" max="3" step="0.25" value="1">
+    </div>
+
+    <div class="ctrl-group">
+      <label>Escala: <span id="scale-val">1.0×</span></label>
+      <input type="range" id="scale-range" min="0.5" max="2" step="0.25" value="1">
+    </div>
+
+    <div class="ctrl-group">
+      <label>Control</label>
+      <button id="pause-btn">⏸ Pausar</button>
+    </div>
+
+  </div>
+
+  <script src="rat-animator.js"></script>
+  <script src="rat-state-machine.js"></script>
+  <script>
+  'use strict';
+
+  // ── Setup canvas ───────────────────────────────────────────────────────────
+
+  const LOGICAL_W = 510;
+  const LOGICAL_H = 330;
+  const SPRITES   = '../sprites';
+
+  const canvas  = document.getElementById('scene');
+  const ctx     = canvas.getContext('2d');
+  const dpr     = window.devicePixelRatio || 1;
+
+  canvas.width  = LOGICAL_W * dpr;
+  canvas.height = LOGICAL_H * dpr;
+  canvas.style.width  = LOGICAL_W + 'px';
+  canvas.style.height = LOGICAL_H + 'px';
+  ctx.scale(dpr, dpr);
+
+  // Crisp drawing
+  ctx.imageSmoothingEnabled = false;
+
+  // ── Background ─────────────────────────────────────────────────────────────
+
+  let bgImage = null;
+  const bgImg = new Image();
+  bgImg.onload = () => { bgImage = bgImg; };
+  bgImg.src = '../../rat_images/png/background/01001.png';
+
+  // ── Animator ───────────────────────────────────────────────────────────────
+
+  // We manage our own RAF loop (not RatAnimator's built-in loop)
+  // so we can composite background + rat in one pass.
+
+  const animator = new RatAnimator(canvas, SPRITES);
+  // Override the canvas/ctx so RatAnimator doesn't reset it
+  animator.canvas = canvas;
+  animator.ctx    = ctx;
+
+  let ratVariant  = '';
+  animator.ratVariant = ratVariant;
+
+  let ratScale = 1.0;
+  let manualBehavior = null;
+
+  // ── State machine ──────────────────────────────────────────────────────────
+
+  const sm = new RatStateMachine({
+    canvasW: LOGICAL_W,
+    canvasH: LOGICAL_H,
+    speed:   80,
+    ratVariant: ratVariant,
+    onStateChange: async (spriteName) => {
+      if (manualBehavior) return; // ignore SM when manual
+      try {
+        await animator.setState(spriteName);
+      } catch(e) {
+        console.warn('Sprite not found:', spriteName, e.message);
+      }
+    }
+  });
+
+  // Position rat at scene center initially
+  animator.x = sm.x;
+  animator.y = sm.y;
+
+  // ── Preload common sprites ─────────────────────────────────────────────────
+
+  const stateReadout = document.getElementById('state-readout');
+  stateReadout.textContent = 'Precargando sprites…';
+
+  const preloadList = [
+    'walk_left','walk_right','walk_up','walk_down',
+    'run_left','run_right',
+    'groom_a','groom_b','groom_c',
+    'sniff_left','sniff_right',
+    'eat','drink',
+    'freeze_a','freeze_b',
+    'explore_left','explore_right',
+    'rear_up_a',
+  ];
+
+  (async () => {
+    await animator.preload(preloadList);
+    await animator.setState('walk_right');
+    stateReadout.textContent = 'Listo — modo autónomo';
+    startLoop();
+  })();
+
+  // ── Main render loop ───────────────────────────────────────────────────────
+
+  let lastTime  = null;
+  let paused    = false;
+  // FPS tracking
+  let fpsFrames = 0;
+  let fpsAccum  = 0;
+  const fpsEl   = document.getElementById('fps');
+
+  function startLoop() {
+    requestAnimationFrame(loop);
+  }
+
+  function loop(ts) {
+    requestAnimationFrame(loop);
+
+    if (lastTime === null) { lastTime = ts; return; }
+    const delta = Math.min(ts - lastTime, 50);
+    lastTime = ts;
+
+    // FPS counter
+    fpsFrames++;
+    fpsAccum += delta;
+    if (fpsAccum >= 500) {
+      fpsEl.textContent = Math.round(fpsFrames / (fpsAccum / 1000)) + ' fps';
+      fpsFrames = 0;
+      fpsAccum  = 0;
+    }
+
+    if (!paused) {
+      // Advance state machine
+      if (!manualBehavior) {
+        const pos = sm.update(delta);
+        animator.x = pos.x;
+        animator.y = pos.y;
+      }
+
+      // Advance animation frame
+      animator._tick(delta);
+    }
+
+    // ── Draw ────────────────────────────────────────────────────────────────
+
+    // Clear
+    ctx.clearRect(0, 0, LOGICAL_W, LOGICAL_H);
+
+    // Background
+    if (bgImage) {
+      ctx.drawImage(bgImage, 0, 0, LOGICAL_W, LOGICAL_H);
+    } else {
+      ctx.fillStyle = '#8fa86e';
+      ctx.fillRect(0, 0, LOGICAL_W, LOGICAL_H);
+    }
+
+    // Draw rat (scaled around anchor)
+    if (animator._behavior && animator._bitmap) {
+      const meta  = animator._behavior;
+      const frame = meta.frames[animator._frame];
+
+      const dw = Math.round(meta.cellWidth  * ratScale);
+      const dh = Math.round(meta.cellHeight * ratScale);
+      const dx = Math.round(animator.x - dw / 2);
+      const dy = Math.round(animator.y - dh);
+
+      ctx.drawImage(
+        animator._bitmap,
+        frame.srcX, frame.srcY, meta.cellWidth, meta.cellHeight,
+        dx, dy, dw, dh
+      );
+    }
+
+    // State label
+    if (!paused && animator._behaviorName) {
+      stateReadout.textContent =
+        `Comportamiento: ${animator._behaviorName}  |  Frame: ${animator._frame + 1}/${animator.frameCount}  |  Pos: (${Math.round(animator.x)}, ${Math.round(animator.y)})`;
+    }
+  }
+
+  // ── UI Controls ────────────────────────────────────────────────────────────
+
+  document.getElementById('behavior-select').addEventListener('change', async function() {
+    const val = this.value;
+    if (val === 'auto') {
+      manualBehavior = null;
+      return;
+    }
+    manualBehavior = val;
+    try {
+      await animator.setState(val);
+    } catch(e) {
+      console.error('Sprite not found:', val, e);
+    }
+  });
+
+  document.getElementById('variant-select').addEventListener('change', async function() {
+    ratVariant = this.value;
+    animator.ratVariant = ratVariant;
+    // Reload current behavior with new variant
+    if (animator._behaviorName) {
+      try {
+        await animator.setState(animator._behaviorName);
+      } catch(e) {
+        console.warn('Variant sprite not found, keeping current');
+      }
+    }
+  });
+
+  document.getElementById('speed-range').addEventListener('input', function() {
+    const v = parseFloat(this.value);
+    document.getElementById('speed-val').textContent = v.toFixed(2) + '×';
+    animator.setSpeed(v);
+    sm.speed = 80 * v;
+  });
+
+  document.getElementById('scale-range').addEventListener('input', function() {
+    const v = parseFloat(this.value);
+    document.getElementById('scale-val').textContent = v.toFixed(2) + '×';
+    ratScale = v;
+  });
+
+  document.getElementById('pause-btn').addEventListener('click', function() {
+    paused = !paused;
+    this.textContent = paused ? '▶ Reanudar' : '⏸ Pausar';
+    this.classList.toggle('active', paused);
+    if (paused) sm.pause(); else sm.resume();
+  });
+
+  </script>
+</body>
+</html>
