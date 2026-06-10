@@ -12,6 +12,8 @@ import { createInitialState } from "./engine/state";
 import { getScenario } from "./data/scenarios";
 import { downloadSave, applySave, type SaveFile } from "./persistence/save";
 import { es } from "./data/i18n/es";
+import { getTutorial, type TutorialCtx } from "./data/tutorials";
+import { TutorialPicker, TutorialCard } from "./ui/Tutorial";
 
 export function App() {
   const simRef = useRef<Simulation>(new Simulation());
@@ -20,6 +22,12 @@ export function App() {
   const [speed, setSpeed] = useState(1);
   const [recordTab, setRecordTab] = useState<"cumulative" | "cer">("cumulative");
   const [frame, forceRender] = useState(0);
+
+  // --- Tutoriales guiados ---
+  const [showPicker, setShowPicker] = useState(false);
+  const [tutorialId, setTutorialId] = useState<string | null>(null);
+  const [stepIndex, setStepIndex] = useState(0);
+  const tutorialCtxRef = useRef<TutorialCtx | null>(null);
 
   const pausedRef = useRef(paused);
   const speedRef = useRef(speed);
@@ -104,11 +112,68 @@ export function App() {
     },
   };
 
+  // --- Lógica del tutorial activo ---
+  const activeTutorial = tutorialId ? getTutorial(tutorialId) : undefined;
+  const currentStep = activeTutorial?.steps[stepIndex];
+
+  // Contexto del tutorial (se actualiza cada render).
+  tutorialCtxRef.current = {
+    sim,
+    protocol: protocolRef.current,
+    loadScenario: handlers.onScenario,
+    setSchedule: handlers.onApplySchedule,
+    setSpeed,
+    setRecordTab,
+  };
+
+  // Prepara la simulación al entrar en un paso.
+  useEffect(() => {
+    if (!tutorialId) return;
+    const step = getTutorial(tutorialId)?.steps[stepIndex];
+    if (step?.setup && tutorialCtxRef.current) step.setup(tutorialCtxRef.current);
+    forceRender((n) => n + 1);
+  }, [tutorialId, stepIndex]);
+
+  const ctx = tutorialCtxRef.current;
+  const goalMet = !!(currentStep?.advanceWhen && ctx && currentStep.advanceWhen(ctx));
+  const stepProgress =
+    currentStep?.progress && ctx ? currentStep.progress(ctx) : null;
+
+  // Avanza automáticamente cuando se cumple el objetivo del paso.
+  useEffect(() => {
+    if (!goalMet || !tutorialId) return;
+    const t = getTutorial(tutorialId);
+    if (!t) return;
+    const id = setTimeout(
+      () => setStepIndex((i) => (i < t.steps.length - 1 ? i + 1 : i)),
+      800,
+    );
+    return () => clearTimeout(id);
+  }, [goalMet, tutorialId]);
+
+  const startTutorial = (id: string) => {
+    setShowPicker(false);
+    setStepIndex(0);
+    setTutorialId(id);
+  };
+  const closeTutorial = () => {
+    setTutorialId(null);
+    setStepIndex(0);
+  };
+  const nextStep = () => {
+    if (!activeTutorial) return;
+    if (stepIndex >= activeTutorial.steps.length - 1) closeTutorial();
+    else setStepIndex((i) => i + 1);
+  };
+
   return (
     <div className="app">
       <header className="app-header">
         <h1>{es.appTitle}</h1>
         <span className="subtitle">{es.subtitle}</span>
+        <button className="tutorial-launch" onClick={() => setShowPicker(true)}>
+          📘 {es.tutorials.button}
+        </button>
       </header>
 
       <main className="layout">
@@ -164,6 +229,22 @@ export function App() {
           <ControlPanel {...handlers} />
         </section>
       </main>
+
+      {showPicker && (
+        <TutorialPicker onStart={startTutorial} onClose={() => setShowPicker(false)} />
+      )}
+      {activeTutorial && currentStep && (
+        <TutorialCard
+          tutorial={activeTutorial}
+          stepIndex={stepIndex}
+          step={currentStep}
+          goalMet={goalMet}
+          progress={stepProgress}
+          onPrev={() => setStepIndex((i) => Math.max(0, i - 1))}
+          onNext={nextStep}
+          onClose={closeTutorial}
+        />
+      )}
     </div>
   );
 }

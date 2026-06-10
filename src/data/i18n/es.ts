@@ -89,6 +89,22 @@ export const es = {
     tabCer: "CER",
   },
 
+  tutorials: {
+    button: "Tutoriales",
+    choose: "Elige un tutorial guiado",
+    chooseHint:
+      "Cada lección prepara la simulación y te guía paso a paso. Puedes salir cuando quieras.",
+    step: "Paso",
+    of: "de",
+    prev: "Anterior",
+    next: "Siguiente",
+    finish: "Finalizar",
+    close: "Cerrar",
+    start: "Comenzar",
+    goalMet: "¡Objetivo cumplido! Avanzando…",
+    objective: "Objetivo",
+  },
+
   scenarioNames: {
     naive: "Rata ingenua (nueva)",
     magazine: "Entrenamiento de magazine",
