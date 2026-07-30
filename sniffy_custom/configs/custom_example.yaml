@@ -1,0 +1,53 @@
+experiment:
+  name: "Experimento Customizado - Nose Poke FR-10"
+  seed: 123
+  ticks_per_second: 10
+  max_session_ticks: 36000
+  include_builtin_behaviors: true
+
+organism:
+  deprivation_initial: 0.85
+  food_sound_association: 0.0
+  behavioural_contrast_factor: 1.0
+
+  # Override parameters of a built-in behavior
+  behavior_overrides:
+    "Bar Press":
+      base: 0.2
+
+  # Define completely new behaviors
+  custom_behaviors:
+    - name: "Nose Poke"
+      id: 0x200
+      base: 0.015
+      beh: 0.0
+      pain: 0.05
+      sctr: 0.3
+      dsc: 0.3
+      sch: 0.9
+      crt: 0.05
+      thrshdl: 0.0
+      trainable: true
+      description: "Animal inserts nose into a hole"
+
+    - name: "Tail Flick"
+      id: 0x201
+      base: 0.008
+      beh: 0.0
+      pain: 0.02
+      sctr: 0.2
+      dsc: 0.1
+      sch: 0.6
+      crt: 0.03
+      thrshdl: 0.0
+      trainable: true
+      description: "Quick lateral tail movement"
+
+schedule:
+  type: "fr"
+  parameter: 10
+  target_behavior: "Nose Poke"
+
+output:
+  csv_path: "data/custom_session.csv"
+  plots_path: "data/custom_plots/"
